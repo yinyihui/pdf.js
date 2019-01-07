@@ -84,6 +84,10 @@ class PDFFindBar {
     });
 
     this.eventBus.on('resize', this._adjustWidth.bind(this));
+
+    // Customised by yinyihui
+    // Set the close event for other tools
+    this.eventBus.on('forcefindbarclose', this.close.bind(this));
   }
 
   reset() {
@@ -197,6 +201,10 @@ class PDFFindBar {
     this.findField.focus();
 
     this._adjustWidth();
+
+    // Customised by yinyihui
+    // Force markbar close
+    this.eventBus.dispatch('forcemarkbarclose', { source: window, });
   }
 
   close() {

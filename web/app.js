@@ -46,11 +46,16 @@ import { PDFViewer } from './pdf_viewer';
 import { SecondaryToolbar } from './secondary_toolbar';
 import { Toolbar } from './toolbar';
 import { ViewHistory } from './view_history';
+import { PDFMarkBar } from './customize/pdf_mark_bar';
 
 const DEFAULT_SCALE_DELTA = 1.1;
 const DISABLE_AUTO_FETCH_LOADING_BAR_TIMEOUT = 5000; // ms
 const FORCE_PAGES_LOADED_TIMEOUT = 10000; // ms
 const WHEEL_ZOOM_DISABLED_TIMEOUT = 1000; // ms
+
+// Customised by yinyihui
+// Bitmask of the customised supprt functions
+const SUPPORT_MARK = 1; // mark
 
 const DefaultExternalServices = {
   updateFindControlState(data) {},
@@ -345,6 +350,11 @@ let PDFViewerApplication = {
     pdfLinkService.setHistory(this.pdfHistory);
 
     this.findBar = new PDFFindBar(appConfig.findBar, eventBus, this.l10n);
+    // Customised by yinyihui
+    // Markbar init
+    let markBarConfig = Object.create(appConfig.markBar);
+    markBarConfig.pdfViewer = this.pdfViewer;
+    this.markBar = new PDFMarkBar(markBarConfig, eventBus, this.l10n);
 
     this.pdfDocumentProperties =
       new PDFDocumentProperties(appConfig.documentProperties,
@@ -1426,7 +1436,7 @@ if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
         // Hosted or local viewer, allow for any file locations
         return;
       }
-      // Hide to set Cross Domain urls 2018-12-13
+      // Hide to set Cross Domain urls by yinyihui
       // let { origin, protocol, } = new URL(file, window.location.href);
       // Removing of the following line will not guarantee that the viewer will
       // start accepting URLs from foreign origin -- CORS headers on the remote
@@ -1593,6 +1603,16 @@ function webViewerInitialized() {
         'An error occurred while loading the PDF.').then((msg) => {
       PDFViewerApplication.error(msg, reason);
     });
+  }
+
+  // Customised by yinyihui
+  // Supprt customised functions
+  if (document.location.search.indexOf("?") == 0) {
+    let params = parseQueryString(document.location.search.substring(1));
+    let custSupport = 'support' in params ? params.support : 0;
+    if (custSupport & SUPPORT_MARK) {
+      PDFViewerApplication.toolbar.items.viewMark.classList.remove("hidden");
+    }
   }
 }
 
