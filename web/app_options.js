@@ -48,6 +48,11 @@ const defaultOptions = {
     value: false,
     kind: OptionKind.VIEWER,
   },
+  disableOpenActionDestination: {
+    /** @type {boolean} */
+    value: true,
+    kind: OptionKind.VIEWER,
+  },
   disablePageLabels: {
     /** @type {boolean} */
     value: false,
@@ -84,6 +89,11 @@ const defaultOptions = {
   externalLinkTarget: {
     /** @type {number} */
     value: 0,
+    kind: OptionKind.VIEWER,
+  },
+  historyUpdateUrl: {
+    /** @type {boolean} */
+    value: false,
     kind: OptionKind.VIEWER,
   },
   imageResourcesPath: {

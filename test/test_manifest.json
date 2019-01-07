@@ -1275,6 +1275,22 @@
        "rounds": 1,
        "type": "eq"
     },
+    {  "id": "issue7496",
+       "file": "pdfs/issue7496.pdf",
+       "md5": "b422981ae781166e75c0fb4c3634ed96",
+       "link": true,
+       "rounds": 1,
+       "lastPage": 1,
+       "type": "load"
+    },
+    {  "id": "issue10326",
+       "file": "pdfs/issue10326.pdf",
+       "md5": "015c13b09ef735ea1204f38992c60487",
+       "link": true,
+       "rounds": 1,
+       "lastPage": 1,
+       "type": "load"
+    },
     {  "id": "issue7544",
        "file": "pdfs/issue7544.pdf",
        "md5": "87e3a9fc7d6a6c1bd5b53af6926ce48e",
@@ -2750,6 +2766,12 @@
        "type": "text",
        "about": "Note that the text layer seems to be off to the right."
     },
+    {  "id": "issue10084",
+       "file": "pdfs/issue10084_reduced.pdf",
+       "md5": "ae37cf36f2e319688c608e4086836824",
+       "rounds": 1,
+       "type": "eq"
+    },
     {  "id": "issue4890",
        "file": "pdfs/issue4890.pdf",
        "md5": "1666feb4cd26318c2bdbea6a175dce87",
@@ -3406,6 +3428,12 @@
       "link": true,
       "type": "eq",
       "about": "True type font with encoding dict with no base encoding but with differences."
+    },
+    {  "id": "issue10402",
+       "file": "pdfs/issue10402.pdf",
+       "md5": "7936bd34d7c0aebd0a864b5aa98aa1b4",
+       "rounds": 1,
+       "type": "eq"
     },
     {  "id": "issue3064-text",
        "file": "pdfs/issue3064.pdf",

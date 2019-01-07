@@ -867,7 +867,9 @@ let PDFViewerApplication = {
 
     // Since the `setInitialView` call below depends on this being resolved,
     // fetch it early to avoid delaying initial rendering of the PDF document.
-    let pageModePromise = pdfDocument.getPageMode().catch(
+    const pageModePromise = pdfDocument.getPageMode().catch(
+      function() { /* Avoid breaking initial rendering; ignoring errors. */ });
+    const openActionDestPromise = pdfDocument.getOpenActionDestination().catch(
       function() { /* Avoid breaking initial rendering; ignoring errors. */ });
 
     this.toolbar.setPagesCount(pdfDocument.numPages, false);
@@ -901,8 +903,11 @@ let PDFViewerApplication = {
       if (!AppOptions.get('disableHistory') && !this.isViewerEmbedded) {
         // The browsing history is only enabled when the viewer is standalone,
         // i.e. not when it is embedded in a web page.
-        let resetHistory = !AppOptions.get('showPreviousViewOnLoad');
-        this.pdfHistory.initialize(pdfDocument.fingerprint, resetHistory);
+        this.pdfHistory.initialize({
+          fingerprint: pdfDocument.fingerprint,
+          resetHistory: !AppOptions.get('showPreviousViewOnLoad'),
+          updateUrl: AppOptions.get('historyUpdateUrl'),
+        });
 
         if (this.pdfHistory.initialBookmark) {
           this.initialBookmark = this.pdfHistory.initialBookmark;
@@ -923,8 +928,17 @@ let PDFViewerApplication = {
       }).catch(() => { /* Unable to read from storage; ignoring errors. */ });
 
       Promise.all([
-        storePromise, pageModePromise,
-      ]).then(async ([values = {}, pageMode]) => {
+        storePromise, pageModePromise, openActionDestPromise,
+      ]).then(async ([values = {}, pageMode, openActionDest]) => {
+        if (openActionDest && !this.initialBookmark &&
+            !AppOptions.get('disableOpenActionDestination')) {
+          // Always let the browser history/document hash take precedence.
+          this.initialBookmark = JSON.stringify(openActionDest);
+          // TODO: Re-factor the `PDFHistory` initialization to remove this hack
+          // that's currently necessary to prevent weird initial history state.
+          this.pdfHistory.push({ explicitDest: openActionDest,
+                                 pageNumber: null, });
+        }
         const initialBookmark = this.initialBookmark;
         // Initialize the default values, from user preferences.
         const zoom = AppOptions.get('defaultZoomValue');
