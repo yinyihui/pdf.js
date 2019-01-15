@@ -153,6 +153,7 @@ function getViewerConfiguration() {
       markArea: document.getElementById('markArea'),
       undoMark: document.getElementById('undoMark'),
       delete: document.getElementById('delete'),
+      clear: document.getElementById('clear'),
       clearAll: document.getElementById('clearAll'),
       parse: document.getElementById('parse'),
       parseCurrent: document.getElementById('parseCurrent'),

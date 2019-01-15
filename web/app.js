@@ -47,6 +47,8 @@ import { SecondaryToolbar } from './secondary_toolbar';
 import { Toolbar } from './toolbar';
 import { ViewHistory } from './view_history';
 import { PDFMarkBar } from './customize/pdf_mark_bar';
+import { MARKTYPE } from './customize/pdf_mark_utils';
+import { PDFMarkController } from './customize/pdf_mark_controller';
 
 const DEFAULT_SCALE_DELTA = 1.1;
 const DISABLE_AUTO_FETCH_LOADING_BAR_TIMEOUT = 5000; // ms
@@ -352,9 +354,8 @@ let PDFViewerApplication = {
     this.findBar = new PDFFindBar(appConfig.findBar, eventBus, this.l10n);
     // Customised by yinyihui
     // Markbar init
-    let markBarConfig = Object.create(appConfig.markBar);
-    markBarConfig.pdfViewer = this.pdfViewer;
-    this.markBar = new PDFMarkBar(markBarConfig, eventBus, this.l10n);
+    this.markBar = new PDFMarkBar(appConfig.markBar, eventBus, this.l10n);
+    this.markController = new PDFMarkController(eventBus);
 
     this.pdfDocumentProperties =
       new PDFDocumentProperties(appConfig.documentProperties,
@@ -1612,6 +1613,7 @@ function webViewerInitialized() {
     let custSupport = 'support' in params ? params.support : 0;
     if (custSupport & SUPPORT_MARK) {
       PDFViewerApplication.toolbar.items.viewMark.classList.remove("hidden");
+      PDFViewerApplication.custSupport = custSupport;
     }
   }
 }
@@ -2016,6 +2018,11 @@ function webViewerPageChanging(evt) {
 
   PDFViewerApplication.toolbar.setPageNumber(page, evt.pageLabel || null);
   PDFViewerApplication.secondaryToolbar.setPageNumber(page);
+  // Customised by yinyihui
+  // PageNumber changing to set new page
+  if ((PDFViewerApplication.custSupport & SUPPORT_MARK) && PDFViewerApplication.markBar.opened) {
+    PDFViewerApplication.markController.setPageNumber(page);
+  }
 
   if (PDFViewerApplication.pdfSidebar.isThumbnailViewVisible) {
     PDFViewerApplication.pdfThumbnailViewer.scrollThumbnailIntoView(page);
@@ -2096,6 +2103,14 @@ function webViewerWheel(evt) {
 }
 
 function webViewerClick(evt) {
+  // Customised by yinyihui
+  // Mark check and init
+  if ((PDFViewerApplication.custSupport & SUPPORT_MARK) && 
+      PDFViewerApplication.markBar.opened && PDFViewerApplication.markBar.markType != MARKTYPE.NULL && 
+      !PDFViewerApplication.markController.canvas) {
+    PDFViewerApplication.markController.setPageNumber(PDFViewerApplication.page);
+  }
+
   if (!PDFViewerApplication.secondaryToolbar.isOpen) {
     return;
   }

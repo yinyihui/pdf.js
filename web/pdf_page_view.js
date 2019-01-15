@@ -608,7 +608,7 @@ class PDFPageView {
 
     // Customised by yinyihui
     // Create mark canvas
-    createMarkCanvas(`mark${this.renderingId}`, canvas.width, canvas.height, canvasWrapper);
+    createMarkCanvas(`mark${this.renderingId}`, canvas.width, canvas.height, canvasWrapper, this.eventBus);
 
     return result;
   }

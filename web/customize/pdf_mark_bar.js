@@ -1,19 +1,17 @@
 import { getGlobalEventBus, NullL10n } from "../ui_utils";
+import { MARKTYPE, MARKOPERATION } from "./pdf_mark_utils";
 
-const MARKTYPE = {
-  NULL: -1,
-  HLINE: 0,
-  VLINE: 1,
-  AREA: 2,
-};
-
+/**
+ * 画线工具栏
+ * 1、提供横线/竖线/方框三种选择形式
+ * 2、提供撤销一步/删除已选/清空当前页/清空所有功能
+ * 3、提供解析功能，可以解析当前页或者全部文档，并设置非空列
+ */
 class PDFMarkBar {
   constructor(options, eventBus = getGlobalEventBus(), l10n = NullL10n) {
     this.opened = false;
-    this.markType = null;
-    this.marks = [];
+    this.markType = MARKTYPE.NULL;
 
-    this.pdfViewer = options.pdfViewer || null;
     this.bar = options.bar || null;
     this.toggleButton = options.toggleButton || null;
     this.markHLine = options.markHLine || null;
@@ -21,6 +19,7 @@ class PDFMarkBar {
     this.markArea = options.markArea || null;
     this.undoMark = options.undoMark || null;
     this.delete = options.delete || null;
+    this.clear = options.clear || null;
     this.clearAll = options.clearAll || null;
     this.parse = options.parse || null;
     this.parseCurrent = options.parseCurrent || null;
@@ -41,36 +40,88 @@ class PDFMarkBar {
       }
     });
 
+    // 横线按钮事件监听
     this.markHLine.addEventListener("click", () => {
-      this.select(MARKTYPE.HLINE);
+      if (this.markType == MARKTYPE.HLINE) {
+        this.select(MARKTYPE.NULL);
+      } else {
+        this.select(MARKTYPE.HLINE);
+      }
     });
 
+    // 竖线按钮事件监听
     this.markVLine.addEventListener("click", () => {
-      this.select(MARKTYPE.VLINE);
+      if (this.markType == MARKTYPE.VLINE) {
+        this.select(MARKTYPE.NULL);
+      } else {
+        this.select(MARKTYPE.VLINE);
+      }
     });
 
+    // 方框按钮事件监听
     this.markArea.addEventListener("click", () => {
-      this.select(MARKTYPE.AREA);
+      if (this.markType == MARKTYPE.AREA) {
+        this.select(MARKTYPE.NULL);
+      } else {
+        this.select(MARKTYPE.AREA);
+      }
     });
 
-    this.undoMark.addEventListener("click", () => {});
+    // 撤销按钮事件监听
+    this.undoMark.addEventListener("click", () => {
+      this.eventBus.dispatch("markoperation", {
+        source: window,
+        type: MARKOPERATION.UNDO
+      });
+    });
 
-    this.delete.addEventListener("click", () => {});
-    
-    this.clearAll.addEventListener("click", () => {});
+    // 删除按钮事件监听
+    this.delete.addEventListener("click", () => {
+      this.eventBus.dispatch("markoperation", {
+        source: window,
+        type: MARKOPERATION.DELETE
+      });
+    });
 
+    // 清空当前页按钮事件监听
+    this.clear.addEventListener("click", () => {
+      this.eventBus.dispatch("markoperation", {
+        source: window,
+        type: MARKOPERATION.CLEAR
+      });
+    });
+
+    // 清空所有按钮事件监听
+    this.clearAll.addEventListener("click", () => {
+      this.eventBus.dispatch("markoperation", {
+        source: window,
+        type: MARKOPERATION.CLEARALL
+      });
+    });
+
+    // 解析按钮事件监听
     this.parse.addEventListener("click", () => {
       this.select(MARKTYPE.NULL);
     });
 
+    // 解析当前页按钮事件监听
     this.parseCurrent.addEventListener("click", () => {
       this.select(MARKTYPE.NULL);
     });
 
+    // 注册总线事件，用于跨组件响应
+    // 调整浏览器大小触发
     this.eventBus.on("resize", this._adjustWidth.bind(this));
+    // 关闭画线工具栏
     this.eventBus.on("forcemarkbarclose", this.close.bind(this));
+    // 删除按钮灰化
+    this.eventBus.on("deletedisable", this.deleteDisable.bind(this));
+    this.delete.disabled = true;
   }
 
+  /**
+   * 打开画线工具栏
+   */
   open() {
     if (!this.opened) {
       this.opened = true;
@@ -79,9 +130,14 @@ class PDFMarkBar {
     }
     this.markHLine.focus();
     this._adjustWidth();
+
+    // 关系搜索工具栏
     this.eventBus.dispatch("forcefindbarclose", { source: window });
   }
 
+  /**
+   * 关闭画线工具栏
+   */
   close() {
     if (!this.opened) {
       return;
@@ -89,8 +145,16 @@ class PDFMarkBar {
     this.opened = false;
     this.toggleButton.classList.remove("toggled");
     this.bar.classList.add("hidden");
+
+    this.select(MARKTYPE.NULL);
+
+    // 触发画线功能失效事件
+    this.eventBus.dispatch("markdisable", { source: window });
   }
 
+  /**
+   * 画线工具栏切换
+   */
   toggle() {
     if (this.opened) {
       this.close();
@@ -99,18 +163,37 @@ class PDFMarkBar {
     }
   }
 
+  /**
+   * 选择画线类型
+   * @param {number} markType 
+   */
   select(markType) {
     for (let i = 0; i < 3; i++) {
       this.bar.children[i].classList.remove("toggled");
     }
+    this.markType = markType;
     if (markType > -1) {
-      this.markType = markType;
       this.bar.children[markType].classList.add("toggled");
     }
+
+    // 触发画线类型修改事件
+    this.eventBus.dispatch("marktypeset", { source: window, markType });
+  }
+
+  /**
+   * 删除按钮灰化
+   * @param {object} param 
+   */
+  deleteDisable(param) {
+    this.delete.disabled = param.disabled;
   }
 
   /**
    * @private
+   * 
+   */
+  /**
+   * 尺寸调整
    */
   _adjustWidth() {
     if (!this.opened) {

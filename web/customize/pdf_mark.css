@@ -101,6 +101,10 @@ html[dir='rtl'] .splitMarkbarButtonSeparator {
   content: url(../images/toolbarButton-undoMark.png);
 }
 
+.toolbarButton.clear::before {
+  content: url(../images/toolbarButton-clear.png);
+}
+
 .toolbarButton.clearAll::before {
   content: url(../images/toolbarButton-clearAll.png);
 }
@@ -137,6 +141,10 @@ html[dir='rtl'] .splitMarkbarButtonSeparator {
   
   .toolbarButton.undoMark::before {
     content: url(../images/toolbarButton-undoMark@2x.png);
+  }
+  
+  .toolbarButton.clear::before {
+    content: url(../images/toolbarButton-clear@2x.png);
   }
   
   .toolbarButton.clearAll::before {
