@@ -2038,7 +2038,7 @@ function webViewerPageChanging(evt) {
   PDFViewerApplication.secondaryToolbar.setPageNumber(page);
   // Customised by yinyihui
   // PageNumber changing to set new page
-  if ((PDFViewerApplication.custSupport & SUPPORT_MARK) && PDFViewerApplication.markBar.opened) {
+  if (PDFViewerApplication.custSupport & SUPPORT_MARK) {
     PDFViewerApplication.markController.setPageNumber(page);
   }
 
