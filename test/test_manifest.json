@@ -739,6 +739,13 @@
        "link": true,
        "type": "load"
     },
+    {  "id": "issue10388",
+       "file": "pdfs/issue10388_reduced.pdf",
+       "md5": "62a6b2adbea1535432bd94a3516e2d4c",
+       "rounds": 1,
+       "link": false,
+       "type": "eq"
+    },
     {  "id": "issue7507",
        "file": "pdfs/issue7507.pdf",
        "md5": "f7aeaafe0c89b94436e94eaa63307303",
@@ -822,6 +829,13 @@
     {  "id": "issue9105",
        "file": "pdfs/issue9105_reduced.pdf",
        "md5": "f3889f7c7b60e1ab998aac430cc7e08e",
+       "rounds": 1,
+       "link": false,
+       "type": "eq"
+    },
+    {  "id": "issue10438",
+       "file": "pdfs/issue10438_reduced.pdf",
+       "md5": "bb26f68493e33af17b256a6ffe777a24",
        "rounds": 1,
        "link": false,
        "type": "eq"
