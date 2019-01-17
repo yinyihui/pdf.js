@@ -1,4 +1,10 @@
 /**
+ * 画线功能掩码，用于判断是否打开画线功能
+ * 0001
+ */
+const SUPPORT_MARK = 1;
+
+/**
  * 标记类型：
  * NULL(-1)-不标记
  * HLINE(0)-横线
@@ -40,7 +46,7 @@ const MARKOPERATION = {
 function createMarkCanvas(id, width, height, parent, eventBus) {
   let oldCanvas = document.getElementById(id);
   if (oldCanvas) {
-    oldCanvas.style.display = 'none';
+    oldCanvas.style.display = "none";
     oldCanvas = null;
   }
   let markCanvas = document.createElement("canvas");
@@ -52,8 +58,8 @@ function createMarkCanvas(id, width, height, parent, eventBus) {
 
   // 控制是否需要重新绘图，用于pdfjs原生动作，如缩放等
   if (document.querySelectorAll(`canvas#${id}`).length > 1) {
-    eventBus.dispatch("markredraw", {source: window, canvas: markCanvas});
+    eventBus.dispatch("markredraw", { source: window, canvas: markCanvas });
   }
 }
 
-export { MARKTYPE, MARKOPERATION, createMarkCanvas };
+export { SUPPORT_MARK, MARKTYPE, MARKOPERATION, createMarkCanvas };

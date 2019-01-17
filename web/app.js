@@ -47,17 +47,13 @@ import { SecondaryToolbar } from './secondary_toolbar';
 import { Toolbar } from './toolbar';
 import { ViewHistory } from './view_history';
 import { PDFMarkBar } from './customize/pdf_mark_bar';
-import { MARKTYPE } from './customize/pdf_mark_utils';
+import { MARKTYPE, SUPPORT_MARK } from './customize/pdf_mark_utils';
 import { PDFMarkController } from './customize/pdf_mark_controller';
 
 const DEFAULT_SCALE_DELTA = 1.1;
 const DISABLE_AUTO_FETCH_LOADING_BAR_TIMEOUT = 5000; // ms
 const FORCE_PAGES_LOADED_TIMEOUT = 10000; // ms
 const WHEEL_ZOOM_DISABLED_TIMEOUT = 1000; // ms
-
-// Customised by yinyihui
-// Bitmask of the customised supprt functions
-const SUPPORT_MARK = 1; // mark
 
 const DefaultExternalServices = {
   updateFindControlState(data) {},
