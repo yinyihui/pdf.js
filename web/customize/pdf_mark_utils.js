@@ -25,13 +25,17 @@ const MARKTYPE = {
  * DELETE(1)-删除选中
  * CLEAR:(2)-清空当前页
  * CLEARALL:(3)-清空所有
+ * PARSE:(4)-解析整个文档
+ * PARSECURRENT:(5)-解析当前页
  */
 const MARKOPERATION = {
   NULL: -1,
   UNDO: 0,
   DELETE: 1,
   CLEAR: 2,
-  CLEARALL: 3
+  CLEARALL: 3,
+  PARSE: 4,
+  PARSECURRENT: 5,
 };
 
 /**

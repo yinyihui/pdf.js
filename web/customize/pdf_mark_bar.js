@@ -99,14 +99,20 @@ class PDFMarkBar {
       });
     });
 
-    // 解析按钮事件监听
+    // 解析文档按钮事件监听
     this.parse.addEventListener("click", () => {
-      this.select(MARKTYPE.NULL);
+      this.eventBus.dispatch("markoperation", {
+        source: window,
+        type: MARKOPERATION.PARSE
+      });
     });
 
     // 解析当前页按钮事件监听
     this.parseCurrent.addEventListener("click", () => {
-      this.select(MARKTYPE.NULL);
+      this.eventBus.dispatch("markoperation", {
+        source: window,
+        type: MARKOPERATION.PARSECURRENT
+      });
     });
 
     // 注册总线事件，用于跨组件响应

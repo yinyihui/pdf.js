@@ -241,6 +241,30 @@ class PDFMarkController {
         }
         this._marks = [];
         break;
+      // 解析整个文档
+      case MARKOPERATION.PARSE:
+        if (window.parent) {
+          window.parent.postMessage(
+            {
+              type: "pase",
+              data: this._marks
+            },
+            document.referrer
+          );
+        }
+        break;
+      // 解析当前页
+      case MARKOPERATION.PARSECURRENT:
+        if (window.parent) {
+          window.parent.postMessage(
+            {
+              type: "paseCurrent",
+              data: { page: this._page, marks: currMarks }
+            },
+            document.referrer
+          );
+        }
+        break;
       case MARKOPERATION.NULL:
       default:
         break;
@@ -551,7 +575,7 @@ class PDFMarkController {
 
   /**
    * 根据canvas重新渲染
-   * @param {object} param 
+   * @param {object} param
    */
   _redrawWithCanvas(param) {
     let canvas = param.canvas;
@@ -572,7 +596,7 @@ class PDFMarkController {
 
   /**
    * 渲染当前页面canvas
-   * @param {object} pageMark 
+   * @param {object} pageMark
    */
   _drawPageMarks(pageMark) {
     for (var i = 0; i < pageMark.marks.length; i++) {
