@@ -243,7 +243,7 @@ class PDFMarkController {
         break;
       // 解析整个文档
       case MARKOPERATION.PARSE:
-        if (window.parent) {
+        if (window.parent && document.referrer) {
           window.parent.postMessage(
             {
               type: "pase",
@@ -255,7 +255,7 @@ class PDFMarkController {
         break;
       // 解析当前页
       case MARKOPERATION.PARSECURRENT:
-        if (window.parent) {
+        if (window.parent && document.referrer) {
           window.parent.postMessage(
             {
               type: "paseCurrent",
@@ -566,10 +566,12 @@ class PDFMarkController {
    * 重新渲染
    */
   _redraw() {
-    this._context.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
-    let pageMark = this._marks.find(item => item.page == this._page);
-    if (pageMark && pageMark.marks.length) {
-      this._drawPageMarks(pageMark);
+    if (this._context) {
+      this._context.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
+      let pageMark = this._marks.find(item => item.page == this._page);
+      if (pageMark && pageMark.marks.length) {
+        this._drawPageMarks(pageMark);
+      }
     }
   }
 

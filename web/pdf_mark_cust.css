@@ -2,7 +2,7 @@
   position: relative;
   height: 32px;
   background-color: #474747; /* fallback */
-  background-image: url(../images/texture.png),
+  background-image: url(images/texture.png),
                     linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
 }
 html[dir='ltr'] .markbar {
@@ -82,85 +82,85 @@ html[dir='rtl'] .splitMarkbarButtonSeparator {
 }
 
 #viewMark.toolbarButton::before {
-  content: url(../images/toolbarButton-viewMark.png);
+  content: url(images/toolbarButton-viewMark.png);
 }
 
 .toolbarButton.markHLine::before {
-  content: url(../images/toolbarButton-markHLine.png);
+  content: url(images/toolbarButton-markHLine.png);
 }
 
 .toolbarButton.markVLine::before {
-  content: url(../images/toolbarButton-markVLine.png);
+  content: url(images/toolbarButton-markVLine.png);
 }
 
 .toolbarButton.markArea::before {
-  content: url(../images/toolbarButton-markArea.png);
+  content: url(images/toolbarButton-markArea.png);
 }
 
 .toolbarButton.undoMark::before {
-  content: url(../images/toolbarButton-undoMark.png);
+  content: url(images/toolbarButton-undoMark.png);
 }
 
 .toolbarButton.clear::before {
-  content: url(../images/toolbarButton-clear.png);
+  content: url(images/toolbarButton-clear.png);
 }
 
 .toolbarButton.clearAll::before {
-  content: url(../images/toolbarButton-clearAll.png);
+  content: url(images/toolbarButton-clearAll.png);
 }
 
 .toolbarButton.delete::before {
-  content: url(../images/toolbarButton-delete.png);
+  content: url(images/toolbarButton-delete.png);
 }
 
 .toolbarButton.parse::before {
-  content: url(../images/toolbarButton-parse.png);
+  content: url(images/toolbarButton-parse.png);
 }
 
 .toolbarButton.parseCurrent::before {
-  content: url(../images/toolbarButton-parseCurrent.png);
+  content: url(images/toolbarButton-parseCurrent.png);
 }
 
 @media screen and (min-resolution: 1.1dppx) {
   /* Rules for Retina screens */
   #viewMark.toolbarButton::before {
-    content: url(../images/toolbarButton-viewMark@2x.png);
+    content: url(images/toolbarButton-viewMark@2x.png);
   }
   
   .toolbarButton.markHLine::before {
-    content: url(../images/toolbarButton-markHLine@2x.png);
+    content: url(images/toolbarButton-markHLine@2x.png);
   }
   
   .toolbarButton.markVLine::before {
-    content: url(../images/toolbarButton-markVLine@2x.png);
+    content: url(images/toolbarButton-markVLine@2x.png);
   }
   
   .toolbarButton.markArea::before {
-    content: url(../images/toolbarButton-markArea@2x.png);
+    content: url(images/toolbarButton-markArea@2x.png);
   }
   
   .toolbarButton.undoMark::before {
-    content: url(../images/toolbarButton-undoMark@2x.png);
+    content: url(images/toolbarButton-undoMark@2x.png);
   }
   
   .toolbarButton.clear::before {
-    content: url(../images/toolbarButton-clear@2x.png);
+    content: url(images/toolbarButton-clear@2x.png);
   }
   
   .toolbarButton.clearAll::before {
-    content: url(../images/toolbarButton-clearAll@2x.png);
+    content: url(images/toolbarButton-clearAll@2x.png);
   }
   
   .toolbarButton.delete::before {
-    content: url(../images/toolbarButton-delete@2x.png);
+    content: url(images/toolbarButton-delete@2x.png);
   }
   
   .toolbarButton.parse::before {
-    content: url(../images/toolbarButton-parse@2x.png);
+    content: url(images/toolbarButton-parse@2x.png);
   }
   
   .toolbarButton.parseCurrent::before {
-    content: url(../images/toolbarButton-parseCurrent@2x.png);
+    content: url(images/toolbarButton-parseCurrent@2x.png);
   }
 }
 

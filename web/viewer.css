@@ -14,7 +14,7 @@
  */
 
 @import url(pdf_viewer.css);
-@import url(customize/pdf_mark.css);
+@import url(pdf_mark_cust.css);
 
 :root {
   --sidebar-width: 200px;
