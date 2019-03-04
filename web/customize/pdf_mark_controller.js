@@ -259,7 +259,7 @@ class PDFMarkController {
           window.parent.postMessage(
             {
               type: "paseCurrent",
-              data: { page: this._page, marks: currMarks }
+              data: [ currMarks ]
             },
             document.referrer
           );
