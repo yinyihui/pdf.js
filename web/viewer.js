@@ -78,6 +78,9 @@ function getViewerConfiguration() {
       presentationModeButton: document.getElementById('presentationMode'),
       download: document.getElementById('download'),
       viewBookmark: document.getElementById('viewBookmark'),
+      // Customised by yinyihui
+      // Mark in document, for specified PDF parsing
+      viewMark: document.getElementById('viewMark'),
     },
     secondaryToolbar: {
       toolbar: document.getElementById('secondaryToolbar'),
@@ -139,6 +142,22 @@ function getViewerConfiguration() {
       findResultsCount: document.getElementById('findResultsCount'),
       findPreviousButton: document.getElementById('findPrevious'),
       findNextButton: document.getElementById('findNext'),
+    },
+    // Customised by yinyihui
+    // MarkBar details
+    markBar: {
+      bar: document.getElementById('markbar'),
+      toggleButton: document.getElementById('viewMark'),
+      markHLine: document.getElementById('markHLine'),
+      markVLine: document.getElementById('markVLine'),
+      markArea: document.getElementById('markArea'),
+      undoMark: document.getElementById('undoMark'),
+      delete: document.getElementById('delete'),
+      clear: document.getElementById('clear'),
+      clearAll: document.getElementById('clearAll'),
+      parse: document.getElementById('parse'),
+      parseCurrent: document.getElementById('parseCurrent'),
+      nonEmptyCols: document.getElementById('nonEmptyCols'),
     },
     passwordOverlay: {
       overlayName: 'passwordOverlay',

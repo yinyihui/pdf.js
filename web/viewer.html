@@ -120,6 +120,42 @@ See https://github.com/adobe-type-tools/cmap-resources
             <span id="findMsg" class="toolbarLabel"></span>
           </div>
         </div>  <!-- findbar -->
+        
+        <div class="markbar hidden doorHanger" id="markbar">
+          <button id="markHLine" class="toolbarButton markHLine" title="Draw horizontal line in document" tabindex="101" data-l10n-id="markhline">
+            <span data-l10n-id="markhline_label">MarkHorizontalLine</span>
+          </button>
+          <button id="markVLine" class="toolbarButton markVLine" title="Draw vertical line in document" tabindex="102" data-l10n-id="markvline">
+            <span data-l10n-id="markvline_label">MarkVerticalLine</span>
+          </button>
+          <button id="markArea" class="toolbarButton markArea" title="Draw area in document" tabindex="103" data-l10n-id="markarea">
+            <span data-l10n-id="markarea_label">MarkArea</span>
+          </button>
+          <div class="splitMarkbarButtonSeparator"></div>
+          <button id="undoMark" class="toolbarButton undoMark" title="Clear latest mark in document" tabindex="104" data-l10n-id="undomark">
+            <span data-l10n-id="undomark_label">UndoMark</span>
+          </button>
+          <button id="delete" class="toolbarButton delete" title="Delete selected mark in document" tabindex="105" data-l10n-id="delete">
+            <span data-l10n-id="delete_label">Delete</span>
+          </button>
+          <button id="clear" class="toolbarButton clear" title="Clear current page marks in document" tabindex="106" data-l10n-id="clear">
+            <span data-l10n-id="clear_label">ClearPage</span>
+          </button>
+          <button id="clearAll" class="toolbarButton clearAll" title="Clear all marks in document" tabindex="106" data-l10n-id="clearall">
+            <span data-l10n-id="clearall_label">ClearAll</span>
+          </button>
+          <div class="splitMarkbarButtonSeparator"></div>
+          <button id="parse" class="toolbarButton parse" title="Parse contents in marks" tabindex="107" data-l10n-id="parse">
+            <span data-l10n-id="parse_label">Parse</span>
+          </button>
+          <button id="parseCurrent" class="toolbarButton parseCurrent" title="Parse current page contents in marks" tabindex="108" data-l10n-id="parsecurrent">
+            <span data-l10n-id="parsecurrent_label">ParseCurrent</span>
+          </button>
+          <div id="nonEmptyCols">
+            <label for="nonEmptyInput" class="toolbarLabel" data-l10n-id="nonemptycols_label">Whole words</label>
+            <input id="nonEmptyInput" class="toolbarField" title="nonEmptyCols" placeholder="nonEmptyCols" tabindex="109" data-l10n-id="nonemptycols">
+          </div>
+        </div>  <!-- markbar -->
 
         <div id="secondaryToolbar" class="secondaryToolbar hidden doorHangerRight">
           <div id="secondaryToolbarButtonContainer">
@@ -224,6 +260,9 @@ See https://github.com/adobe-type-tools/cmap-resources
                 </div>
                 <input type="number" id="pageNumber" class="toolbarField pageNumber" title="Page" value="1" size="4" min="1" tabindex="15" data-l10n-id="page">
                 <span id="numPages" class="toolbarLabel"></span>
+                <button id="viewMark" class="toolbarButton hidden" title="Mark in Document" tabindex="16" data-l10n-id="markbar">
+                  <span data-l10n-id="markbar_label">Mark</span>
+                </button>
               </div>
               <div id="toolbarViewerRight">
                 <button id="presentationMode" class="toolbarButton presentationMode hiddenLargeView" title="Switch to Presentation Mode" tabindex="31" data-l10n-id="presentation_mode">

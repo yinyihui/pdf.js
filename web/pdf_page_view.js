@@ -23,6 +23,8 @@ import {
 import { RenderingStates } from './pdf_rendering_queue';
 import { viewerCompatibilityParams } from './viewer_compatibility';
 
+import { createMarkCanvas } from './customize/pdf_mark_utils';
+
 /**
  * @typedef {Object} PDFPageViewOptions
  * @property {HTMLDivElement} container - The viewer element.
@@ -603,6 +605,11 @@ class PDFPageView {
       showCanvas();
       renderCapability.reject(error);
     });
+
+    // Customised by yinyihui
+    // Create mark canvas
+    createMarkCanvas(`mark${this.renderingId}`, canvas.width, canvas.height, canvasWrapper, this.eventBus);
+
     return result;
   }
 

@@ -1,0 +1,174 @@
+.markbar {
+  position: relative;
+  height: 32px;
+  background-color: #474747; /* fallback */
+  background-image: url(images/texture.png),
+                    linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
+}
+html[dir='ltr'] .markbar {
+  box-shadow: inset 0 1px 1px hsla(0,0%,0%,.15),
+              inset 0 -1px 0 hsla(0,0%,100%,.05),
+              0 1px 0 hsla(0,0%,0%,.15),
+              0 1px 1px hsla(0,0%,0%,.1);
+}
+html[dir='rtl'] .markbar {
+  box-shadow: inset 0 1px 1px hsla(0,0%,0%,.15),
+              inset 0 -1px 0 hsla(0,0%,100%,.05),
+              0 1px 0 hsla(0,0%,0%,.15),
+              0 1px 1px hsla(0,0%,0%,.1);
+}
+
+.markbar {
+  top: 32px;
+  position: absolute;
+  z-index: 10000;
+  height: auto;
+  min-width: 16px;
+  padding: 0px 6px 0px 6px;
+  margin: 4px 2px 4px 2px;
+  color: hsl(0,0%,85%);
+  font-size: 12px;
+  line-height: 14px;
+  text-align: left;
+  cursor: default;
+}
+
+.markbar {
+  min-width: 242px;
+}
+.markbar.wrapContainers > div {
+  clear: both;
+}
+html[dir='ltr'] .markbar {
+  left: 254px;
+}
+html[dir='rtl'] .markbar {
+  right: 254px;
+}
+#nonEmptyCols {
+  width: 210px;
+  height: 32px;
+}
+#nonEmptyInput::-webkit-input-placeholder {
+  color: hsl(0, 0%, 75%);
+}
+#nonEmptyInput::placeholder {
+  font-style: italic;
+}
+
+html[dir='ltr'] .markbar * {
+  position: relative;
+  float: left;
+}
+html[dir='rtl'] .markbar * {
+  position: relative;
+  float: right;
+}
+
+.splitMarkbarButtonSeparator {
+  padding: 11px 0;
+  width: 1px;
+  background-color: hsla(0,0%,0%,.5);
+  z-index: 99;
+  box-shadow: 0 0 0 1px hsla(0,0%,100%,.08);
+  display: inline-block;
+  margin: 5px 0;
+}
+html[dir='ltr'] .splitMarkbarButtonSeparator {
+  float: left;
+}
+html[dir='rtl'] .splitMarkbarButtonSeparator {
+  float: right;
+}
+
+#viewMark.toolbarButton::before {
+  content: url(images/toolbarButton-viewMark.png);
+}
+
+.toolbarButton.markHLine::before {
+  content: url(images/toolbarButton-markHLine.png);
+}
+
+.toolbarButton.markVLine::before {
+  content: url(images/toolbarButton-markVLine.png);
+}
+
+.toolbarButton.markArea::before {
+  content: url(images/toolbarButton-markArea.png);
+}
+
+.toolbarButton.undoMark::before {
+  content: url(images/toolbarButton-undoMark.png);
+}
+
+.toolbarButton.clear::before {
+  content: url(images/toolbarButton-clear.png);
+}
+
+.toolbarButton.clearAll::before {
+  content: url(images/toolbarButton-clearAll.png);
+}
+
+.toolbarButton.delete::before {
+  content: url(images/toolbarButton-delete.png);
+}
+
+.toolbarButton.parse::before {
+  content: url(images/toolbarButton-parse.png);
+}
+
+.toolbarButton.parseCurrent::before {
+  content: url(images/toolbarButton-parseCurrent.png);
+}
+
+@media screen and (min-resolution: 1.1dppx) {
+  /* Rules for Retina screens */
+  #viewMark.toolbarButton::before {
+    content: url(images/toolbarButton-viewMark@2x.png);
+  }
+  
+  .toolbarButton.markHLine::before {
+    content: url(images/toolbarButton-markHLine@2x.png);
+  }
+  
+  .toolbarButton.markVLine::before {
+    content: url(images/toolbarButton-markVLine@2x.png);
+  }
+  
+  .toolbarButton.markArea::before {
+    content: url(images/toolbarButton-markArea@2x.png);
+  }
+  
+  .toolbarButton.undoMark::before {
+    content: url(images/toolbarButton-undoMark@2x.png);
+  }
+  
+  .toolbarButton.clear::before {
+    content: url(images/toolbarButton-clear@2x.png);
+  }
+  
+  .toolbarButton.clearAll::before {
+    content: url(images/toolbarButton-clearAll@2x.png);
+  }
+  
+  .toolbarButton.delete::before {
+    content: url(images/toolbarButton-delete@2x.png);
+  }
+  
+  .toolbarButton.parse::before {
+    content: url(images/toolbarButton-parse@2x.png);
+  }
+  
+  .toolbarButton.parseCurrent::before {
+    content: url(images/toolbarButton-parseCurrent@2x.png);
+  }
+}
+
+@media all and (max-width: 640px) {
+  html[dir='ltr'] .markbar {
+    left: 161px;
+  }
+  html[dir='rtl'] .markbar {
+    right: 161px;
+  }
+}
