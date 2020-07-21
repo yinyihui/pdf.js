@@ -13,36 +13,37 @@
  * limitations under the License.
  */
 
-import { BaseViewer, ScrollMode } from './base_viewer';
-import { getVisibleElements, scrollIntoView } from './ui_utils';
-import { shadow } from 'pdfjs-lib';
+import { BaseViewer } from "./base_viewer.js";
+import { shadow } from "pdfjs-lib";
 
 class PDFViewer extends BaseViewer {
-  get _setDocumentViewerElement() {
-    return shadow(this, '_setDocumentViewerElement', this.viewer);
+  get _viewerElement() {
+    return shadow(this, "_viewerElement", this.viewer);
   }
 
-  _scrollIntoView({ pageDiv, pageSpot = null, }) {
+  _scrollIntoView({ pageDiv, pageSpot = null, pageNumber = null }) {
     if (!pageSpot && !this.isInPresentationMode) {
       const left = pageDiv.offsetLeft + pageDiv.clientLeft;
       const right = left + pageDiv.clientWidth;
-      const { scrollLeft, clientWidth, } = this.container;
-      if (this._scrollMode === ScrollMode.HORIZONTAL ||
-          left < scrollLeft || right > scrollLeft + clientWidth) {
-        pageSpot = { left: 0, top: 0, };
+      const { scrollLeft, clientWidth } = this.container;
+      if (
+        this._isScrollModeHorizontal ||
+        left < scrollLeft ||
+        right > scrollLeft + clientWidth
+      ) {
+        pageSpot = { left: 0, top: 0 };
       }
     }
-    scrollIntoView(pageDiv, pageSpot);
+    super._scrollIntoView({ pageDiv, pageSpot, pageNumber });
   }
 
   _getVisiblePages() {
-    if (!this.isInPresentationMode) {
-      return getVisibleElements(this.container, this._pages, true,
-                                this._scrollMode === ScrollMode.HORIZONTAL);
+    if (this.isInPresentationMode) {
+      // The algorithm in `getVisibleElements` doesn't work in all browsers and
+      // configurations (e.g. Chrome) when Presentation Mode is active.
+      return this._getCurrentVisiblePage();
     }
-    // The algorithm in `getVisibleElements` doesn't work in all browsers and
-    // configurations when presentation mode is active.
-    return this._getCurrentVisiblePage();
+    return super._getVisiblePages();
   }
 
   _updateHelper(visiblePages) {
@@ -66,15 +67,6 @@ class PDFViewer extends BaseViewer {
     }
     this._setCurrentPageNumber(currentId);
   }
-
-  get _isScrollModeHorizontal() {
-    // Used to ensure that pre-rendering of the next/previous page works
-    // correctly, since Scroll/Spread modes are ignored in Presentation Mode.
-    return (this.isInPresentationMode ?
-            false : this._scrollMode === ScrollMode.HORIZONTAL);
-  }
 }
 
-export {
-  PDFViewer,
-};
+export { PDFViewer };
