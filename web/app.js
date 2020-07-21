@@ -73,6 +73,9 @@ import { PDFViewer } from "./pdf_viewer.js";
 import { SecondaryToolbar } from "./secondary_toolbar.js";
 import { Toolbar } from "./toolbar.js";
 import { ViewHistory } from "./view_history.js";
+import { PDFMarkBar } from "./customize/pdf_mark_bar.js";
+import { MARKTYPE, SUPPORT_MARK } from "./customize/pdf_mark_utils.js";
+import { PDFMarkController } from "./customize/pdf_mark_controller.js";
 
 const DEFAULT_SCALE_DELTA = 1.1;
 const DISABLE_AUTO_FETCH_LOADING_BAR_TIMEOUT = 5000; // ms
@@ -463,7 +466,7 @@ const PDFViewerApplication = {
     if (!this.supportsIntegratedFind) {
       this.findBar = new PDFFindBar(appConfig.findBar, eventBus, this.l10n);
     }
-    
+
     // Customised by yinyihui
     // Markbar init
     this.markBar = new PDFMarkBar(appConfig.markBar, eventBus, this.l10n);
@@ -1824,7 +1827,7 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
       }
       // Hide to set Cross Domain urls by yinyihui
       // const { origin, protocol } = new URL(file, window.location.href);
-      
+
       // Removing of the following line will not guarantee that the viewer will
       // start accepting URLs from foreign origin -- CORS headers on the remote
       // server must be properly configured.
@@ -1994,9 +1997,9 @@ function webViewerInitialized() {
   // Supprt customised functions
   if (document.location.search.indexOf("?") == 0) {
     let params = parseQueryString(document.location.search.substring(1));
-    let custSupport = 'support' in params ? params.support : 0;
+    let custSupport = "support" in params ? params.support : 0;
     if (custSupport & SUPPORT_MARK) {
-      PDFViewerApplication.toolbar.items.viewMark.classList.remove("hidden");
+      appConfig.toolbar.viewMark.classList.remove("hidden");
       PDFViewerApplication.custSupport = custSupport;
     }
   }
@@ -2506,10 +2509,15 @@ function webViewerWheel(evt) {
 function webViewerClick(evt) {
   // Customised by yinyihui
   // Mark check and init
-  if ((PDFViewerApplication.custSupport & SUPPORT_MARK) && 
-      PDFViewerApplication.markBar.opened && PDFViewerApplication.markBar.markType != MARKTYPE.NULL && 
-      !PDFViewerApplication.markController.canvas) {
-    PDFViewerApplication.markController.setPageNumber(PDFViewerApplication.page);
+  if (
+    PDFViewerApplication.custSupport & SUPPORT_MARK &&
+    PDFViewerApplication.markBar.opened &&
+    PDFViewerApplication.markBar.markType != MARKTYPE.NULL &&
+    !PDFViewerApplication.markController.canvas
+  ) {
+    PDFViewerApplication.markController.setPageNumber(
+      PDFViewerApplication.page
+    );
   }
 
   // Avoid triggering the fallback bar when the user clicks on the

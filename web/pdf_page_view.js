@@ -31,7 +31,7 @@ import {
 import { RenderingStates } from "./pdf_rendering_queue.js";
 import { viewerCompatibilityParams } from "./viewer_compatibility.js";
 
-import { createMarkCanvas } from './customize/pdf_mark_utils';
+import { createMarkCanvas } from "./customize/pdf_mark_utils.js";
 
 /**
  * @typedef {Object} PDFPageViewOptions
@@ -648,17 +648,26 @@ class PDFPageView {
       }
     };
 
-    renderTask.promise.then(function() {
-      showCanvas();
-      renderCapability.resolve(undefined);
-    }, function(error) {
-      showCanvas();
-      renderCapability.reject(error);
-    });
+    renderTask.promise.then(
+      function () {
+        showCanvas();
+        renderCapability.resolve(undefined);
+      },
+      function (error) {
+        showCanvas();
+        renderCapability.reject(error);
+      }
+    );
 
     // Customised by yinyihui
     // Create mark canvas
-    createMarkCanvas(`mark${this.renderingId}`, canvas.width, canvas.height, canvasWrapper, this.eventBus);
+    createMarkCanvas(
+      `mark${this.renderingId}`,
+      canvas.width,
+      canvas.height,
+      canvasWrapper,
+      this.eventBus
+    );
 
     return result;
   }

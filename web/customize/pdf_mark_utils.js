@@ -15,7 +15,7 @@ const MARKTYPE = {
   NULL: -1, // 不标记
   HLINE: 0, // 横线
   VLINE: 1, // 竖线
-  AREA: 2 // 区域
+  AREA: 2, // 区域
 };
 
 /**
@@ -53,7 +53,7 @@ function createMarkCanvas(id, width, height, parent, eventBus) {
     oldCanvas.style.display = "none";
     oldCanvas = null;
   }
-  let markCanvas = document.createElement("canvas");
+  const markCanvas = document.createElement("canvas");
   markCanvas.id = id;
   markCanvas.width = width;
   markCanvas.height = height;
