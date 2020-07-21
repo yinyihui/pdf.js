@@ -13,78 +13,62 @@
  * limitations under the License.
  */
 
-import { CMapCompressionType } from '../../src/shared/util';
-import isNodeJS from '../../src/shared/is_node';
-import { isRef } from '../../src/core/primitives';
+import { Page, PDFDocument } from "../../src/core/document.js";
+import { assert } from "../../src/shared/util.js";
+import { isNodeJS } from "../../src/shared/is_node.js";
+import { isRef } from "../../src/core/primitives.js";
+import { StringStream } from "../../src/core/stream.js";
+
+class DOMFileReaderFactory {
+  static async fetch(params) {
+    const response = await fetch(params.path);
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    return new Uint8Array(await response.arrayBuffer());
+  }
+}
 
 class NodeFileReaderFactory {
-  static fetch(params) {
-    var fs = require('fs');
-    var file = fs.readFileSync(params.path);
-    return new Uint8Array(file);
+  static async fetch(params) {
+    const fs = require("fs");
+
+    return new Promise((resolve, reject) => {
+      fs.readFile(params.path, (error, data) => {
+        if (error || !data) {
+          reject(error || new Error(`Empty file for: ${params.path}`));
+          return;
+        }
+        resolve(new Uint8Array(data));
+      });
+    });
   }
 }
 
 const TEST_PDFS_PATH = {
-  dom: '../pdfs/',
-  node: './test/pdfs/',
+  dom: "../pdfs/",
+  node: "./test/pdfs/",
 };
 
 function buildGetDocumentParams(filename, options) {
-  let params = Object.create(null);
-  if (isNodeJS()) {
+  const params = Object.create(null);
+  if (isNodeJS) {
     params.url = TEST_PDFS_PATH.node + filename;
   } else {
     params.url = new URL(TEST_PDFS_PATH.dom + filename, window.location).href;
   }
-  for (let option in options) {
+  for (const option in options) {
     params[option] = options[option];
   }
   return params;
-}
-
-class NodeCMapReaderFactory {
-  constructor({ baseUrl = null, isCompressed = false, }) {
-    this.baseUrl = baseUrl;
-    this.isCompressed = isCompressed;
-  }
-
-  fetch({ name, }) {
-    if (!this.baseUrl) {
-      return Promise.reject(new Error(
-        'The CMap "baseUrl" parameter must be specified, ensure that ' +
-        'the "cMapUrl" and "cMapPacked" API parameters are provided.'));
-    }
-    if (!name) {
-      return Promise.reject(new Error('CMap name must be specified.'));
-    }
-    return new Promise((resolve, reject) => {
-      let url = this.baseUrl + name + (this.isCompressed ? '.bcmap' : '');
-
-      let fs = require('fs');
-      fs.readFile(url, (error, data) => {
-        if (error || !data) {
-          reject(new Error('Unable to load ' +
-                           (this.isCompressed ? 'binary ' : '') +
-                           'CMap at: ' + url));
-          return;
-        }
-        resolve({
-          cMapData: new Uint8Array(data),
-          compressionType: this.isCompressed ?
-            CMapCompressionType.BINARY : CMapCompressionType.NONE,
-        });
-      });
-    });
-  }
 }
 
 class XRefMock {
   constructor(array) {
     this._map = Object.create(null);
 
-    for (let key in array) {
-      let obj = array[key];
+    for (const key in array) {
+      const obj = array[key];
       this._map[obj.ref.toString()] = obj.data;
     }
   }
@@ -109,10 +93,38 @@ class XRefMock {
   }
 }
 
+function createIdFactory(pageIndex) {
+  const pdfManager = {
+    get docId() {
+      return "d0";
+    },
+  };
+  const stream = new StringStream("Dummy_PDF_data");
+  const pdfDocument = new PDFDocument(pdfManager, stream);
+
+  const page = new Page({
+    pdfManager: pdfDocument.pdfManager,
+    xref: pdfDocument.xref,
+    pageIndex,
+    globalIdFactory: pdfDocument._globalIdFactory,
+  });
+  return page._localIdFactory;
+}
+
+function isEmptyObj(obj) {
+  assert(
+    typeof obj === "object" && obj !== null,
+    "isEmptyObj - invalid argument."
+  );
+  return Object.keys(obj).length === 0;
+}
+
 export {
+  DOMFileReaderFactory,
   NodeFileReaderFactory,
-  NodeCMapReaderFactory,
   XRefMock,
   buildGetDocumentParams,
   TEST_PDFS_PATH,
+  createIdFactory,
+  isEmptyObj,
 };
