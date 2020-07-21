@@ -1,5 +1,5 @@
-import { getGlobalEventBus, NullL10n } from "../ui_utils";
-import { MARKTYPE, MARKOPERATION } from "./pdf_mark_utils";
+import { NullL10n } from "../ui_utils.js";
+import { MARKTYPE, MARKOPERATION } from "./pdf_mark_utils.js";
 
 /**
  * 画线工具栏
@@ -8,7 +8,7 @@ import { MARKTYPE, MARKOPERATION } from "./pdf_mark_utils";
  * 3、提供解析功能，可以解析当前页或者全部文档，并设置非空列
  */
 class PDFMarkBar {
-  constructor(options, eventBus = getGlobalEventBus(), l10n = NullL10n) {
+  constructor(options, eventBus, l10n = NullL10n) {
     this.opened = false;
     this.markType = MARKTYPE.NULL;
 

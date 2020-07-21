@@ -1,5 +1,4 @@
-import { getGlobalEventBus } from "../ui_utils";
-import { MARKTYPE, MARKOPERATION } from "./pdf_mark_utils";
+import { MARKTYPE, MARKOPERATION } from "./pdf_mark_utils.js";
 
 /**
  * 画线实体类
@@ -55,7 +54,7 @@ class Mark {
           x: this.startX,
           y: this.startY,
           width: this.endX - this.startX,
-          height: 0
+          height: 0,
         };
         break;
       case MARKTYPE.VLINE:
@@ -63,7 +62,7 @@ class Mark {
           x: this.startX,
           y: this.startY,
           width: 0,
-          height: this.endY - this.startY
+          height: this.endY - this.startY,
         };
         break;
       case MARKTYPE.AREA:
@@ -71,7 +70,7 @@ class Mark {
           x: this.startX,
           y: this.startY,
           width: this.endX - this.startX,
-          height: this.endY - this.startY
+          height: this.endY - this.startY,
         };
         break;
       case MARKTYPE.NULL:
@@ -89,7 +88,7 @@ class Mark {
  * 总体原则：每次新增或删除画线后都需要重新渲染一下canvas
  */
 class PDFMarkController {
-  constructor(eventBus = getGlobalEventBus(), page = 1) {
+  constructor(eventBus, page = 1) {
     // 事件总线实例
     this.eventBus = eventBus;
     // 当前PDF所在页码
@@ -218,7 +217,7 @@ class PDFMarkController {
           this._mark = null;
           this.eventBus.dispatch("deletedisable", {
             source: window,
-            disabled: true
+            disabled: true,
           });
         }
         break;
@@ -247,7 +246,7 @@ class PDFMarkController {
           window.parent.postMessage(
             {
               type: "pase",
-              data: this._marks
+              data: this._marks,
             },
             document.referrer
           );
@@ -259,7 +258,7 @@ class PDFMarkController {
           window.parent.postMessage(
             {
               type: "paseCurrent",
-              data: [ currMarks ]
+              data: [currMarks],
             },
             document.referrer
           );
@@ -396,7 +395,7 @@ class PDFMarkController {
       this._drawMark = false;
       this.eventBus.dispatch("deletedisable", {
         source: window,
-        disabled: false
+        disabled: false,
       });
       return;
     }
@@ -554,7 +553,7 @@ class PDFMarkController {
       } else {
         this._marks.push({
           page: this._page,
-          marks: [this._mark]
+          marks: [this._mark],
         });
       }
       this._redraw();
