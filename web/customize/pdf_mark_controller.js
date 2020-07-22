@@ -245,8 +245,9 @@ class PDFMarkController {
         if (window.parent && document.referrer) {
           window.parent.postMessage(
             {
-              type: "pase",
+              type: "all",
               data: this._marks,
+              identity: window.PDFViewerApplication.custIdentity, // 设置工具识别标志，用来在多tab或者多引用者同时工作时message单向传递
             },
             document.referrer
           );
@@ -257,8 +258,9 @@ class PDFMarkController {
         if (window.parent && document.referrer) {
           window.parent.postMessage(
             {
-              type: "paseCurrent",
-              data: [currMarks],
+              type: "current",
+              data: currMarks ? [currMarks] : [{ page: this._page, marks: [] }],
+              identity: window.PDFViewerApplication.custIdentity, // 设置工具识别标志，用来在多tab或者多引用者同时工作时message单向传递
             },
             document.referrer
           );
@@ -390,17 +392,11 @@ class PDFMarkController {
     }
     this._redraw();
 
-    // 选中了mark则高亮删除按钮
     if (this._mark) {
+      // 置画线标志位false
       this._drawMark = false;
-      this.eventBus.dispatch("deletedisable", {
-        source: window,
-        disabled: false,
-      });
       return;
     }
-    // 未选择mark则灰化删除按钮
-    this.eventBus.dispatch("deletedisable", { source: window, disabled: true });
     // 记录起点位置
     this._mark = new Mark(
       Number.parseFloat((clickX / this._canvasWidth).toFixed(4)),
@@ -447,7 +443,8 @@ class PDFMarkController {
           break;
         // 方框
         case MARKTYPE.AREA:
-          this._context.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
+          // this._context.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
+          this._redraw();
           this._mark.setEndPoint(
             Number.parseFloat((clickX / this._canvasWidth).toFixed(4)),
             Number.parseFloat((clickY / this._canvasHeight).toFixed(4))
@@ -600,6 +597,9 @@ class PDFMarkController {
    * @param {object} pageMark
    */
   _drawPageMarks(pageMark) {
+    // 初始化删除按钮为灰化状态
+    this.eventBus.dispatch("deletedisable", { source: window, disabled: true });
+    let hasSelect = false;
     for (var i = 0; i < pageMark.marks.length; i++) {
       var mark = pageMark.marks[i];
       switch (mark.markType) {
@@ -616,6 +616,7 @@ class PDFMarkController {
           );
           if (mark.isSelected) {
             this._context.lineWidth = 5;
+            hasSelect = true;
           } else {
             this._context.lineWidth = 1;
           }
@@ -624,6 +625,7 @@ class PDFMarkController {
         case MARKTYPE.AREA:
           if (mark.isSelected) {
             this._context.lineWidth = 5;
+            hasSelect = true;
           } else {
             this._context.lineWidth = 1;
           }
@@ -638,6 +640,14 @@ class PDFMarkController {
         default:
           break;
       }
+    }
+
+    // 如果存在选中mark，删除按钮高亮
+    if (hasSelect) {
+      this.eventBus.dispatch("deletedisable", {
+        source: window,
+        disabled: false,
+      });
     }
   }
 }

@@ -71,7 +71,7 @@ class PDFMarkBar {
     this.undoMark.addEventListener("click", () => {
       this.eventBus.dispatch("markoperation", {
         source: window,
-        type: MARKOPERATION.UNDO
+        type: MARKOPERATION.UNDO,
       });
     });
 
@@ -79,7 +79,7 @@ class PDFMarkBar {
     this.delete.addEventListener("click", () => {
       this.eventBus.dispatch("markoperation", {
         source: window,
-        type: MARKOPERATION.DELETE
+        type: MARKOPERATION.DELETE,
       });
     });
 
@@ -87,7 +87,7 @@ class PDFMarkBar {
     this.clear.addEventListener("click", () => {
       this.eventBus.dispatch("markoperation", {
         source: window,
-        type: MARKOPERATION.CLEAR
+        type: MARKOPERATION.CLEAR,
       });
     });
 
@@ -95,7 +95,7 @@ class PDFMarkBar {
     this.clearAll.addEventListener("click", () => {
       this.eventBus.dispatch("markoperation", {
         source: window,
-        type: MARKOPERATION.CLEARALL
+        type: MARKOPERATION.CLEARALL,
       });
     });
 
@@ -103,7 +103,7 @@ class PDFMarkBar {
     this.parse.addEventListener("click", () => {
       this.eventBus.dispatch("markoperation", {
         source: window,
-        type: MARKOPERATION.PARSE
+        type: MARKOPERATION.PARSE,
       });
     });
 
@@ -111,7 +111,7 @@ class PDFMarkBar {
     this.parseCurrent.addEventListener("click", () => {
       this.eventBus.dispatch("markoperation", {
         source: window,
-        type: MARKOPERATION.PARSECURRENT
+        type: MARKOPERATION.PARSECURRENT,
       });
     });
 
@@ -171,7 +171,7 @@ class PDFMarkBar {
 
   /**
    * 选择画线类型
-   * @param {number} markType 
+   * @param {number} markType
    */
   select(markType) {
     for (let i = 0; i < 3; i++) {
@@ -188,7 +188,7 @@ class PDFMarkBar {
 
   /**
    * 删除按钮灰化
-   * @param {object} param 
+   * @param {object} param
    */
   deleteDisable(param) {
     this.delete.disabled = param.disabled;
@@ -196,7 +196,7 @@ class PDFMarkBar {
 
   /**
    * @private
-   * 
+   *
    */
   /**
    * 尺寸调整

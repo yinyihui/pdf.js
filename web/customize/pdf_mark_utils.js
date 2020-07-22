@@ -42,21 +42,20 @@ const MARKOPERATION = {
  * 创建画线功能canvas
  *
  * @param {string} id canvas元素Id，便于后面获取元素
- * @param {number} width 宽度，与前一个canvas保持一致
- * @param {number} height 高度，与前一个canvas保持一致
  * @param {HTMLElement} parent 父节点，用于将canvas元素append到dom中
  * @param {EventBus} eventBus 事件总线实例
  */
-function createMarkCanvas(id, width, height, parent, eventBus) {
+function createMarkCanvas(id, parent, eventBus) {
   let oldCanvas = document.getElementById(id);
   if (oldCanvas) {
     oldCanvas.style.display = "none";
     oldCanvas = null;
   }
-  const markCanvas = document.createElement("canvas");
+  let markCanvas = document.createElement("canvas");
   markCanvas.id = id;
-  markCanvas.width = width;
-  markCanvas.height = height;
+  // 使用父节点高度和宽度
+  markCanvas.width = parseFloat(parent.style.width);
+  markCanvas.height = parseFloat(parent.style.height);
   markCanvas.style = "position: absolute; top: 0; left: 0; z-index: 0";
   parent.appendChild(markCanvas);
 
